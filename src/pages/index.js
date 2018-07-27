@@ -69,7 +69,7 @@ const IndexPage = props => {
               date={post.node.created_at}
               excerpt={post.node.content.content}
               // timeToRead={post.node.timeToRead}
-              // slug={post.node.fields.slug}
+              slug={`/${post.node.id}/`}
               // category={post.node.frontmatter.category}
               // key={post.node.fields.slug}
             />
@@ -87,6 +87,7 @@ export const IndexQuery = graphql`
     allContentfulPost(sort: { fields: [created_at], order: DESC }) {
       edges {
         node {
+          id
           title {
             id
             title
