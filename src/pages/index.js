@@ -42,7 +42,7 @@ const Hero = styled.div`
 `;
 
 const IndexPage = props => {
-  const postEdges = props.data.allMarkdownRemark.edges;
+  const postEdges = props.data.allContentfulPost.edges;
   return (
     <Layout>
       <Wrapper>
@@ -65,13 +65,13 @@ const IndexPage = props => {
           <SectionTitle>Latest stories</SectionTitle>
           {postEdges.map(post => (
             <Article
-              title={post.node.frontmatter.title}
-              date={post.node.frontmatter.date}
-              excerpt={post.node.excerpt}
-              timeToRead={post.node.timeToRead}
-              slug={post.node.fields.slug}
-              category={post.node.frontmatter.category}
-              key={post.node.fields.slug}
+              title={post.node.title.title}
+              date={post.node.created_at}
+              excerpt={post.node.content.content}
+              // timeToRead={post.node.timeToRead}
+              slug={`/${post.node.id}/`}
+              // category={post.node.frontmatter.category}
+              // key={post.node.fields.slug}
             />
           ))}
         </Content>
@@ -84,19 +84,18 @@ export default IndexPage;
 
 export const IndexQuery = graphql`
   query IndexQuery {
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allContentfulPost(sort: { fields: [created_at], order: DESC }) {
       edges {
         node {
-          fields {
-            slug
-          }
-          frontmatter {
+          id
+          title {
+            id
             title
-            date(formatString: "DD.MM.YYYY")
-            category
           }
-          excerpt(pruneLength: 200)
-          timeToRead
+          created_at
+          content {
+            content
+          }
         }
       }
     }
